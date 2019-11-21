@@ -1,0 +1,9 @@
+.DS_Store
+*.DS_Store
+.idea
+.gradle
+.vscode
+server/build
+out
+.log
+.err

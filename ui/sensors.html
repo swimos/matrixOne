@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Swim - MATRIX Labs Sensor Demo</title>
+    <meta name="description" content="">
+    <link rel="icon" type="image/png" href="https://cdn.swim.ai/images/favicon/favicon_x128.png" />
+
+    <!-- Google Fonts Library -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lato:300,400" rel="stylesheet">
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="./css/pref.css" type="text/css">
+
+    <!-- Swim Library -->
+    <script src="https://cdn.swimos.org/js/latest/swim-system.min.js"></script>
+
+    <!-- javascript -->
+    <script src="./js/perf.js"></script>
+
+    <script type="text/javascript">
+        const swimUrl = `ws://${document.location.hostname}:${document.location.port}`;
+        document.addEventListener('DOMContentLoaded', ()=> {
+            const gauges = [];
+
+            // Default list of sensors
+            const sensors = {
+                gyro_x: "Gyro X",
+                gyro_y: "Gyro Y",
+                gyro_z: "Gyro Z",
+                accel_x: "Acceleration X",
+                accel_y: "Acceleration Y",
+                accel_z: "Acceleration Z",
+                mag_x: "Magnetometer X",
+                mag_y: "Magnetometer Y",
+                mag_z: "Magnetometer Z",
+                yaw: "Yaw",
+                pitch: "Pitch",
+                roll: "Roll",
+                // uv: "UV Light",
+                humidity: "Humidity",
+                temperature1: "Tempurature 1",
+                temperature2: "Tempurature 2",
+                pressure: "Air Pressure",
+                altitude: "Altitude"
+            }
+
+            for(let key in sensors) {
+                gauges[key] = new PerfGauge("templateRoot", sensors[key], swimUrl, `/sensor/${key}`, 'latest', 'history', "#004868");
+            }
+
+            for (let key in gauges) {
+                gauges[key].start();
+            }
+        }, false);
+    </script>
+
+<body class="page">
+
+    <!-- Default Style Header -->
+    <header class="main-header">
+        <div class="logo-swim">
+            <img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58">
+            <h1 class="title d-none d-sm-block">MATRIX Labs Real-time Data demo</h1>
+        </div>
+        <div class="logo-matrix">
+            <img src="./imgs/MatrixLabs/everloop.png" alt="Matrix Labs Everloop" height="38px">
+            <span class="company">MATRIX</span><span class="section">Labs</span>
+        </div>
+    </header><!-- ./main-header -->
+
+    <main class="main-body container-fuild">
+        <div id="templateRoot" class="row"></div>
+    </main><!-- ./main -->
+
+    <!-- Swim -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', ()=> {
+          if (navigator.userAgent.indexOf("Chrome") != -1 || navigator.userAgent.indexOf("Firefox") != -1 ) {
+            var e = ["%c Created by SWIM team at SWIM.AI Inc. %c @SWIM.ai %c www.swim.ai", "display:block; padding:5px; background: #4171B8; color:#fff;", "display:block; padding:5px; background: #6ccbf4; color:#fff;", "display:block; padding:5px;"];
+            console.info.apply(console, e)
+          }
+        }, false);
+    </script>
+</body>
+
+</html>

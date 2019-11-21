@@ -1,0 +1,126 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: #909090;
+  background-color: #1a1a1a
+}
+
+main {
+  margin: 8px 16px 16px 16px;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 16px;
+  background: rgba(12, 17, 18, 0.5);
+}
+
+/**
+ * Matrix Logo
+ */
+.logo-matrix {
+  display: flex;
+  align-items: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 26px;
+  line-height: 1;
+  color: #fff;
+}
+
+.logo-matrix .company {
+  margin-left: 8px;
+}
+
+.logo-matrix .section {
+  margin-left: 8px;
+  border-bottom:1px solid #fff;
+}
+
+/**
+ * Swim Logo
+ */
+.logo-swim {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.logo-swim .title {
+  margin-left: 16px;
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.8);
+}
+
+/**
+ * Fix bootstrap gutter problem
+ */
+
+.main-body .row {
+  padding: 0 8px;
+}
+
+.main-body .col {
+  padding: 8px
+}
+
+/**
+ * Chart
+ */
+.chartWrap {
+  padding-bottom: 16px;
+}
+
+.chartBox {
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  border-radius: 4px;
+  background: rgba(12, 17, 18, 0.5);
+  overflow: hidden;
+}
+
+.chartWrap h3 {
+  font-size: 13px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 0;
+  padding: 4px 8px;
+  background: #44d7b6;
+}
+
+.chartWrap .content {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.chartWrap .graphic {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.chartWrap .chart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chartWrap .stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  font-size: 18px;
+  font-weight: 300;
+  color: #fff;
+  border-left: 1px solid rgba(255,255,255,0.1);
+}

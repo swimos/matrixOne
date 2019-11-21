@@ -1,0 +1,83 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: #909090;
+  background-color: #1a1a1a
+}
+
+main {
+  margin: 16px;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 16px;
+  background: rgba(12, 17, 18, 0.5);
+}
+
+/**
+ * Matrix Logo
+ */
+.logo-matrix {
+  display: flex;
+  align-items: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 26px;
+  line-height: 1;
+  color: #fff;
+}
+
+.logo-matrix .company {
+  margin-left: 8px;
+}
+
+.logo-matrix .section {
+  margin-left: 8px;
+  border-bottom:1px solid #fff;
+}
+
+/**
+ * Swim Logo
+ */
+.logo-swim {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.logo-swim .title {
+  margin-left: 16px;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 28px;
+  color: rgba(255,255,255,0.8);
+}
+
+/**
+ * Main body style
+ */
+.main-body {
+  overflow: hidden;
+}
+
+.chat-box {
+  width: 800px;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 4px 8px 8px 8px;
+  background: rgba(12, 17, 18, 0.5);
+  border-radius: 8px;
+  overflow: hidden !important;
+  margin: 0px auto;
+}
+
+.chat-box h4 {
+  font-size: 13px;
+  font-weight: 300;
+  margin: 0 0 16px 0;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "matrix-bridge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swimit/matrixOne.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swimit/matrixOne/issues"
+  },
+  "homepage": "https://github.com/swimit/matrixOne#readme",
+  "dependencies": {
+    "@matrix-io/matrix-lite": "^0.4.3",
+    "matrix-protos": "0.0.28",
+    "zeromq": "^5.1.1",
+    "@swim/client": "3.10.1",
+    "@swim/core": "3.10.1",
+    "@swim/ui": "3.10.1",
+    "@swim/ux": "3.10.1"
+  }
+}
