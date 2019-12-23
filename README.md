@@ -31,10 +31,11 @@ exit
 ```
 
 ## Download and Setup App
-1. git clone https://github.com/swimit/flightinfo.git
+1. git clone https://github.com/swimos/matrixOne.git
 2. cd matrixOne
-3. chmod +x setup.sh
+3. chmod +x *.sh
 4. ./setup.sh
+5. chmod +x server/gradlew
 
 ## Running the app
 
@@ -60,6 +61,11 @@ exit
 * WebAgents live in **/src/main/java/swim/matrixone/agents**
     * **/agents/SensorAgent.java** is the main WebAgent in the app. Each sensor on the Creator will have its own WebAgent (digital twin) in the Swim Application.
 
+## Sensor Bridge
+* This demo uses NodeJS to bridge sensor data from Matrix Lite into Swim. Data is passed to each sensor WebAgant inside Swim using Swim Commands. Any processing done on sensor data is handled inside the Sensor WebAgent in Swim.
+* The bridge also handles updating the LED color by opening a link to the /settings/color WebAgent in Swim. When the UI sends new colors into swim, this downlink will automatically get those updates and pass it back to Matrix Lite to change the LED color
+* Lastly the bridge sets up the LED animation inside updateLedAnim()
+
 ## Web UI
 
 ### Web UI served by swim (not node) and so the pages are at the same address as Swim itself
@@ -69,10 +75,8 @@ exit
         2. Sensor Data Gauges: http://[device ip]:9001/**gauges.html**
         3. WebGL Demo: http://[device ip]:9001/**index.html**
         4. more to come....
-2. LayoutEditor is accessed at http://[device ip]:9001/**editor.html**
-    * ***Layout Editor is early alpha and will be removed soon.***
-3. The Web UI can also be served by NodeJS instead of Swim, however we use Swim in this example to keep things simple.
-4. The Swim Javascript Library and UI Components are all vanilla JS with no 3rd party requirements. This makes it easy to integrate into existing code bases and use in the way that works best for your project or environment.
+2. The Web UI can also be served by NodeJS instead of Swim, however we use Swim in this example to keep things simple.
+3. The Swim Javascript Library and UI Components are all vanilla JS with no 3rd party requirements. This makes it easy to integrate into existing code bases and use in the way that works best for your project or environment.
 
 ## More Useful Documentation
 
