@@ -71,10 +71,9 @@ exit
 ### Web UI served by swim (not node) and so the pages are at the same address as Swim itself
 1. by Default the application runs at http://[device ip]:9001 
     * Demo Pages can be found at:
-        1. Sensor Data History Charts: http://[device ip]:9001/**perf.html**
-        2. Sensor Data Gauges: http://[device ip]:9001/**gauges.html**
+        1. Color Picker: http://[device ip]:9001/**colorPicker.html**
+        2. Sensor Data Gauges: http://[device ip]:9001/**sensors.html**
         3. WebGL Demo: http://[device ip]:9001/**index.html**
-        4. more to come....
 2. The Web UI can also be served by NodeJS instead of Swim, however we use Swim in this example to keep things simple.
 3. The Swim Javascript Library and UI Components are all vanilla JS with no 3rd party requirements. This makes it easy to integrate into existing code bases and use in the way that works best for your project or environment.
 
