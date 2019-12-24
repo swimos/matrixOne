@@ -101,10 +101,8 @@ class Main {
 
     updateUV() {
         const newUV = matrix.uv.read();
-        if(this.currUV != newUV) {
-            this.currUV = newUV;
-            swim.command(this.swimUrl, `/sensor/uv`, 'addLatest', this.currUV);
-        }
+        this.currUV = newUV.uv;
+        swim.command(this.swimUrl, `/sensor/uv`, 'addLatest', this.currUV);
     }
 
     updateHumidity() {
