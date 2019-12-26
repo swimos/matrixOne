@@ -27,7 +27,7 @@ class PerfGauge {
 
     initialize() {
         this.mainElement = swim.HtmlView.create('div')
-            .className("chartWrap col col-12 col-md-6 col-lg-4 col-xl-3");
+            .className("chartWrap");
 
         this.boxElement = this.mainElement.append('div')
             .className('chartBox');
@@ -131,10 +131,15 @@ class PerfGauge {
             .didSet((newValue) => {
                 if (newValue) {
                     if (newValue && newValue.value) {
-                        this.statsElement.text(`${newValue.value.toPrecision(2)}`);
+                        if(this.nodeUri === "/sensor/pressure") {
+                            this.statsElement.text(`${newValue.value.toString()}`);
+                        } else {
+                            this.statsElement.text(`${newValue.value.toPrecision(4)}`);
+                        }
+                        
                     }
                     if (newValue.get('rate').value) {
-                        this.statsElement.text(`${newValue.get('rate').value}`);
+                        this.statsElement.text(`${newValue.get('rate').value.toPrecision(4)}`);
                     }
 
                 }
