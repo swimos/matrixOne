@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Swim - MATRIX Labs Sensor Demo</title>
+    <meta name="description" content="">
+    <link rel="icon" type="image/png" href="https://cdn.swim.ai/images/favicon/favicon_x128.png" />
+
+    <!-- Google Fonts Library -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lato:300,400" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="./css/colorPicker.css" type="text/css">
+
+    <style>
+        .eq-container {
+            width: 100%;
+            font-size: 14px;
+            font-weight: 300;
+            padding: 8px 8px 4px 8px;
+            background: rgba(12, 17, 18, 0.5);
+            border-radius: 15px;
+            height: 300px;
+            
+        }    
+
+        .eqBox {
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .eqBox h3 {
+            margin: 0px;
+            padding: 0px;
+            height: 30px;
+            text-align: center;
+        }
+
+        .eqBarsRow {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: row;
+            margin: 1px;
+            border: solid 1px silver;
+            position: relative;
+        }
+
+        .eqBar {
+            position: absolute;
+            background-color: silver;            
+            height: 100%;
+            width: 1px;
+            bottom: 0px;
+        }
+    </style>
+    <!-- Swim Library -->
+    <script src="https://cdn.swimos.org/js/latest/swim-system.min.js"></script>
+
+    <!-- javascript -->
+    <script src="./js/sound.js"></script>
+
+<body class="page">
+
+    <!-- Default Style Header -->
+    <header class="main-header">
+        <div class="logo-swim">
+            <img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58">
+            <h1 class="title d-none d-sm-block">MATRIX Labs Real-time Data demo</h1>
+        </div>
+        <div class="logo-matrix">
+            <img src="./imgs/MatrixLabs/everloop.png" alt="Matrix Labs Everloop" height="38px">
+            <span class="company">MATRIX</span><span class="section">Labs</span>
+        </div>
+    </header><!-- ./main-header -->
+    <main class="main-body">
+        <div class="main-center">
+            <div id="eqRoot" class="eq-container">
+
+            </div>
+        </div>
+    </main>
+    <!-- Swim -->
+    <script type="text/javascript">
+        let screenLoaded = false;
+        const swimUrl = `ws://${document.location.hostname}:${document.location.port}`;
+        const rootDiv = new swim.HtmlAppView(document.getElementById("eqRoot"));
+        const eqScreen = new SoundDemoScreen(rootDiv, swimUrl);
+
+        document.addEventListener('DOMContentLoaded', ()=> {
+            if (navigator.userAgent.indexOf("Chrome") != -1 || navigator.userAgent.indexOf("Firefox") != -1 ) {
+                var e = ["%c Created by SWIM team at SWIM.AI Inc. %c @SWIM.ai %c www.swim.ai", "display:block; padding:5px; background: #4171B8; color:#fff;", "display:block; padding:5px; background: #6ccbf4; color:#fff;", "display:block; padding:5px;"];
+                console.info.apply(console, e)
+            }
+            if(!screenLoaded) {
+                eqScreen.start();    
+                screenLoaded = true;
+            }
+            
+
+        }, false);
+    </script>
+</body>
+
+</html>

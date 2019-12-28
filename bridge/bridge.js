@@ -1,5 +1,6 @@
 const matrix = require("@matrix-io/matrix-lite");
 const swim = require('@swim/client');
+const nfc = require("@matrix-io/matrix-lite-nfc");
 
 class Main {
     constructor() {

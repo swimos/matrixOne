@@ -18,11 +18,12 @@
   "homepage": "https://github.com/swimit/matrixOne#readme",
   "dependencies": {
     "@matrix-io/matrix-lite": "^0.4.3",
-    "matrix-protos": "0.0.28",
-    "zeromq": "^5.1.1",
+    "@matrix-io/matrix-lite-nfc": "0.0.2",
     "@swim/client": "3.10.1",
     "@swim/core": "3.10.1",
     "@swim/ui": "3.10.1",
-    "@swim/ux": "3.10.1"
+    "@swim/ux": "3.10.1",
+    "matrix-protos": "0.0.28",
+    "zeromq": "^5.1.1"
   }
 }

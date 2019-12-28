@@ -23,6 +23,10 @@ public class SensorAgent extends AbstractAgent {
   @SwimLane("latest")
   ValueLane<Float> latest = this.<Float>valueLane();
 
+
+  @SwimLane("buffer")
+  ValueLane<String> buffer = this.<String>valueLane();
+
   /**
    * Use map lane to store history of sensor data. 
    * Key: Long type of timestamp, Float: raw sensor value
@@ -50,4 +54,19 @@ public class SensorAgent extends AbstractAgent {
       history.put(now, i);
     });
 
+  /**
+   * command Lane to receive data from NodeJS data bridge
+   */
+  @SwimLane("pushBuffer")
+  CommandLane<String> pushBuffer = this.<String>commandLane()
+    .onCommand(i -> {
+      // System.out.println(i);
+      buffer.set(i);
+      // // update latest value lane to store latest read-in value
+      // latest.set(i);
+      // final long now = System.currentTimeMillis();
+      // // update map lane with timestamp and read in data
+      // // notice: only last read in 5 minutes period will be stored
+      // history.put(now, i);
+    });
 }
