@@ -14,7 +14,7 @@ nfc.read.start(options, (code, tag) => {
     if(currCode !== code) {
         if (code === 256){
             console.log("Tag Was Scanned");
-            console.log(tag);
+            console.log(JSON.stringify(tag));
         } else {
             console.log(`Nothing Was Scanned: ${code}`);
         }

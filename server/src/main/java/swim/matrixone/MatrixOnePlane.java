@@ -29,7 +29,13 @@ public class MatrixOnePlane extends AbstractPlane {
    * or other setting.
    */
   @SwimRoute("/settings/:id")
-  AgentRoute<SettingsAgent> SettingsAgent;
+  AgentRoute<SettingsAgent> settingsAgent;
+
+  /**
+   * NFC Agent handles all NFC data read in from the Matrix Board
+   */
+  @SwimRoute("/nfc")
+  AgentRoute<NfcAgent> nfcAgent;
 
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();  // define our swim server kernel
