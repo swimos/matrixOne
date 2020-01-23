@@ -21,6 +21,12 @@ public class SettingsAgent extends AbstractAgent {
   ValueLane<Value> color = this.<Value>valueLane();
 
   /**
+   * Value lane to set the current active LED animation name
+   */
+  @SwimLane("ledAnimation")
+  ValueLane<String> ledAnimation = this.<String>valueLane();
+
+  /**
    * Update Value lane with new color value
    */
   private void updateColor(String type, Double value) {
@@ -68,11 +74,20 @@ public class SettingsAgent extends AbstractAgent {
     });
 
   /**
+   * Command lane to receive data to update current LED animation name
+   */
+  @SwimLane("setLedAnimation")
+  CommandLane<Value> setLedAnimation = this.<Value>commandLane()
+    .onCommand(v -> {
+      this.ledAnimation.set(v.stringValue("default"));
+    });
+
+  /**
    * Init one time when agent start
    */
   @Override
   public void didStart() {
-
+      this.ledAnimation.set("default");
       // set default record for color Value lane
       Record rec = Record.create(4).slot("r", 0).slot("g", 0).slot("b", 0).slot("w", 100);
       color.set(rec);

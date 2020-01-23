@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Swim - MATRIX Labs Sensor Demo</title>
+    <title>Swim - MATRIX Labs NFC Tag Reader Demo</title>
     <meta name="description" content="">
     <link rel="icon" type="image/png" href="https://cdn.swim.ai/images/favicon/favicon_x128.png" />
 
@@ -14,7 +14,8 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lato:300,400" rel="stylesheet">
 
     <!-- Style -->
-    <link rel="stylesheet" href="./css/colorPicker.css" type="text/css">
+    <link rel="stylesheet" href="./css/default.css" type="text/css">
+    <link rel="stylesheet" href="./css/nfc.css" type="text/css">
 
     <!-- Swim Library -->
     <script src="https://cdn.swimos.org/js/latest/swim-system.min.js"></script>
@@ -28,7 +29,7 @@
     <header class="main-header">
         <div class="logo-swim">
             <img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58">
-            <h1 class="title d-none d-sm-block">MATRIX Labs Real-time Data demo</h1>
+            <h1 class="title d-none d-sm-block">MATRIX Labs NFC Tag Reader Demo</h1>
         </div>
         <div class="logo-matrix">
             <img src="./imgs/MatrixLabs/everloop.png" alt="Matrix Labs Everloop" height="38px">
@@ -36,8 +37,23 @@
         </div>
     </header><!-- ./main-header -->
     <main class="main-body">
-        <div class="main-center">
-            <div id="eqRoot" class="eq-container">
+        <div class="main-center" id="root">
+            <div class="currentNfcInfoPanel">
+                <h3>Current Nfc</h3>
+                <div class="nfcInfoGrid">
+                    <div>Code</div><div id="nfcCode"></div>
+                    <div>Type</div><div id="nfcType"></div>
+                    <div>Read Status</div><div id="nfcReadStatus"></div>
+                    <div>payload</div><div id="nfcPayload"></div>
+                    <div class="rawData">
+                        <h4>Raw</h4>
+                        <div id="rawData">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="history" id="tagHistory">
 
             </div>
         </div>
@@ -46,7 +62,7 @@
     <script type="text/javascript">
         let screenLoaded = false;
         const swimUrl = `ws://${document.location.hostname}:${document.location.port}`;
-        const rootDiv = new swim.HtmlAppView(document.getElementById("eqRoot"));
+        const rootDiv = new swim.HtmlAppView(document.getElementById("root"));
         const nfcDemo = new NfcDemoScreen(rootDiv, swimUrl);
 
         document.addEventListener('DOMContentLoaded', ()=> {

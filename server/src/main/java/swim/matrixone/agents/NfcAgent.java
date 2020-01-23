@@ -8,6 +8,7 @@ import swim.api.lane.ValueLane;
 import swim.json.Json;
 import swim.structure.Record;
 import swim.structure.Value;
+import swim.uri.Uri;
 
 
 /**
@@ -31,7 +32,7 @@ public class NfcAgent extends AbstractAgent {
     @SwimLane("rawTagData")
     ValueLane<Value> rawTagData = this.<Value>valueLane()
         .didSet((newData, oldData) -> {
-            System.out.println(newData);
+            // System.out.println(newData);
         });
 
 
@@ -44,11 +45,17 @@ public class NfcAgent extends AbstractAgent {
     @SwimLane("pages")
     ValueLane<Value> pages = this.<Value>valueLane();
 
+    @SwimLane("payload")
+    ValueLane<Value> payload = this.<Value>valueLane();
+
+    @SwimLane("records")
+    ValueLane<Value> records = this.<Value>valueLane();
+
     /**
      * Use map lane to store history of nfc reads. 
      */
     @SwimLane("history")
-    MapLane<Long, Record> history = this.<Long, Record>mapLane()
+    MapLane<Long, Value> history = this.<Long, Value>mapLane()
         .didUpdate((key, newValue, oldValue) -> {
         if (this.history.size() > HISTORY_SIZE) {
             this.history.remove(this.history.getIndex(0).getKey());
@@ -65,17 +72,23 @@ public class NfcAgent extends AbstractAgent {
             Integer readCode = readData.get("code").intValue();
             Value tagInfo = readData.get("info");
             Value tagPages = readData.get("pages");
+            Value ndefPayload = readData.get("decodedPayload");
+            Value ndefRecords = readData.get("ndefRecord");
 
-            System.out.println("update nfc data");
-            System.out.println(readCode);
+            // System.out.println("update nfc data");
+            // System.out.println(readCode);
 
             code.set(readCode);
             rawTagData.set(readData);
             info.set(tagInfo);
             pages.set(tagPages);
+            payload.set(ndefPayload);
+            records.set(ndefRecords);
 
-            // latest.set(i);
-            // history.put(System.currentTimeMillis(), readData);
+            history.put(System.currentTimeMillis(), readData);
+
+            command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/settings/animation"), Uri.parse("setLedAnimation"), Value.fromObject("rainbowFadeIn")); 
+
         });
 
     /**

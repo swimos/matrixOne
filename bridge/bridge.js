@@ -2,6 +2,8 @@ const matrix = require("@matrix-io/matrix-lite");
 const swimClient = require('@swim/client');
 const nfc = require("@matrix-io/matrix-lite-nfc");
 const swim = require("@swim/core");
+const swimUi = require("@swim/ui")
+const ndef = require('ndef');
 
 class Main {
     constructor() {
@@ -20,6 +22,9 @@ class Main {
         this.altitude = 0;
         this.pressure = 0;
         this.currNfcCode = 0;
+        this.rainbowStartIndex = 0;
+        this.currentLedAnimation = "default";
+        this.currRainbowStep = 0;
 
         this.colorChange = false;
         this.nfcOptions = {
@@ -47,6 +52,10 @@ class Main {
         if(this.showDebug) {
             console.info('[Main]: start');
         }
+        swimClient.downlinkValue().hostUri(this.swimUrl).nodeUri('/settings/animation').laneUri('ledAnimation')
+            .didSet((value)=> {
+                this.currentLedAnimation = value.stringValue("default");
+            }).open();        
         try {
             this.mainLoop = setInterval(() => {
                 this.startNfcMonitor();
@@ -88,17 +97,17 @@ class Main {
             
             if (code === 256){
                 console.log(`Tag Was Scanned: ${code}`);
-                console.info(tag.ndef.content);
-                console.info(String.fromCharCode.apply(String, tag.ndef.content));
-                // console.log(JSON.stringify(tag));
+                let records = ndef.decodeMessage(tag.ndef.content);
+                tag["ndefRecords"] = records;
+                tag["decodedPayload"] = ndef.text.decodePayload(records[0].payload);
             } else {
                 console.log(`Nothing Was Scanned: ${code}`);
-                // console.log(tag);
+                tag["ndefRecords"] = null;
+                tag["decodedPayload"] = null;
             }
 
             this.currNfcCode = code;
             tag["code"] = code;
-            // const nfcMsg = `{"code": ${code}, "tag", "${JSON.stringify(tag)}"`;
 
             this.doSwimCommand(this.swimUrl, `/nfc`, 'updateNfcData', JSON.stringify(tag));
         }
@@ -132,11 +141,23 @@ class Main {
        * Looping light animation
        */
     updateLedAnim() {
-        if(!this.colorChange) {
-            this.lastColor = this.everloop.shift();
-            this.everloop.push(this.lastColor);
-            matrix.led.set(this.everloop);
+        switch(this.currentLedAnimation) {
+            case "rainbowFadeIn":
+                this.rainbows("in");
+                break;
+            case "rainbowFadeOut":
+                this.rainbows("out");
+                break;
+            default:
+                if(!this.colorChange) {
+                    this.lastColor = this.everloop.shift();
+                    this.everloop.push(this.lastColor);
+                    matrix.led.set(this.everloop);
+                }
+                break;
+    
         }
+
     }
 
     updateImuValues() {
@@ -198,6 +219,45 @@ class Main {
             console.info(ex);
             console.info(`*** Make sure the Swim server is running  ***\r\n`);
         }        
+    }
+
+    interpolate(startValue, endValue, stepNumber, lastStepNumber) {
+        return (endValue - startValue) * stepNumber / lastStepNumber + startValue;
+    }    
+
+    rainbows(fadeDirection) {
+        const startColor = swimUi.Color.rgb(0, 0, 255, 0.2).hsl();
+        const endColor = swimUi.Color.rgb(255, 0, 0, 0.75).hsl();
+        
+        const maxPixels = matrix.led.length;
+        const colorArray = [];
+
+
+        for(let i=0; i<maxPixels;i++) {
+            const newRgb = new swimUi.Color.rgb().hsl();
+            newRgb.h = this.interpolate(startColor.h, endColor.h, i, maxPixels);
+            newRgb.s = 1;
+            newRgb.l = this.currRainbowStep;
+            colorArray.push(newRgb.rgb().toString());
+        }
+        matrix.led.set(colorArray);
+
+
+        if(fadeDirection === "in") {
+            this.currRainbowStep = this.currRainbowStep + 0.1;
+        }
+        if(fadeDirection === "out") {
+            this.currRainbowStep = this.currRainbowStep - 0.15;
+        }
+
+        if(this.currRainbowStep > 0.5 && fadeDirection === "in") {
+            this.doSwimCommand(this.swimUrl, `/settings/animation`, 'setLedAnimation', "rainbowFadeOut");
+        } 
+        if(this.currRainbowStep < 0 && fadeDirection === "out") {
+            this.doSwimCommand(this.swimUrl, `/settings/animation`, 'setLedAnimation', "default");                
+        }
+        
+        
     }
 
 }
