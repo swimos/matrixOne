@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/swimit/matrixOne#readme",
   "dependencies": {
-    "@matrix-io/matrix-lite": "^0.4.3",
+    "@matrix-io/matrix-lite": "^0.4.6",
     "@matrix-io/matrix-lite-nfc": "0.0.2",
     "@swim/client": "3.10.1",
     "@swim/core": "3.10.1",

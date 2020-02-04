@@ -25,6 +25,7 @@ class Main {
         this.rainbowStartIndex = 0;
         this.currentLedAnimation = "default";
         this.currRainbowStep = 0;
+        this.isConnected = false;
 
         this.colorChange = false;
         this.nfcOptions = {
@@ -55,7 +56,15 @@ class Main {
         swimClient.downlinkValue().hostUri(this.swimUrl).nodeUri('/settings/animation').laneUri('ledAnimation')
             .didSet((value)=> {
                 this.currentLedAnimation = value.stringValue("default");
-            }).open();        
+            })
+            .didConnect(() => {
+                this.isConnected = true;
+            })
+            .didClose(() => {
+                this.isConnected = false;
+            })
+            .open();        
+
         try {
             this.mainLoop = setInterval(() => {
                 this.startNfcMonitor();
@@ -117,11 +126,13 @@ class Main {
        * Connect to swim downlinkValue to grab the latest color and set the color
        */
     updateColor() {
-        swimClient.downlinkValue().hostUri(this.swimUrl).nodeUri('/settings/color').laneUri('rgbw')
-            .didSet((value)=> {
-                const color = value.toAny();
-                this.setColor(color);
-            }).open();
+        if(this.isConnected) {
+            swimClient.downlinkValue().hostUri(this.swimUrl).nodeUri('/settings/color').laneUri('rgbw')
+                .didSet((value)=> {
+                    const color = value.toAny();
+                    this.setColor(color);
+                }).open();
+        }
     }
 
     /**
@@ -212,13 +223,18 @@ class Main {
     }
 
     doSwimCommand(hostUri, nodeUri, laneUri, msg) {
-        try {
-            swimClient.command(hostUri, nodeUri, laneUri, msg);
-        } catch(ex) {
-            console.info(`*** doSwimCommand error for ${hostUri}${nodeUri}/${laneUri} ***`);
-            console.info(ex);
-            console.info(`*** Make sure the Swim server is running  ***\r\n`);
-        }        
+        if(this.isConnected) {
+            try {
+                swimClient.command(hostUri, nodeUri, laneUri, msg);
+            } catch(ex) {
+                console.info(`*** doSwimCommand error for ${hostUri}${nodeUri}/${laneUri} ***`);
+                console.info(ex);
+                console.info(`*** Make sure the Swim server is running  ***\r\n`);
+            }        
+    
+        } else {
+            console.info("swim client offline");
+        }
     }
 
     interpolate(startValue, endValue, stepNumber, lastStepNumber) {

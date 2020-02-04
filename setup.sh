@@ -6,7 +6,7 @@ printf "*do system update\n"
 (sudo apt-get -y update)
 
 printf "*install software-properties-common\n"
-(sudo apt-get install -y software-properties-common)
+(sudo apt-get install -y curl software-properties-common)
 (sudo apt-get install -y moreutils)
 
 printf "*add package repos\n"
@@ -27,7 +27,7 @@ printf "*install default JRE\n"
 
 printf "*install node 11/x\n"
 (sudo apt-get remove -y nodejs)
-(curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+(curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install -y nodejs)
 
 printf "*install java\n"
