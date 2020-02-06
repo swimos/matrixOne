@@ -38,23 +38,40 @@
     </header><!-- ./main-header -->
     <main class="main-body">
         <div class="main-center" id="root">
+            <h3 class="title">Current NFC</h3>
+
             <div class="currentNfcInfoPanel">
-                <h3>Current Nfc</h3>
-                <div class="nfcInfoGrid">
-                    <div>Code</div><div id="nfcCode"></div>
-                    <div>Type</div><div id="nfcType"></div>
-                    <div>Read Status</div><div id="nfcReadStatus"></div>
-                    <div>payload</div><div id="nfcPayload"></div>
-                    <div class="rawData">
-                        <h4>Raw</h4>
-                        <div id="rawData">
-                            
-                        </div>
+                <ul class="unstyle">
+                    <li>
+                        <h4>Code</h4>
+                        <div class="value" id="nfcCode"></div>
+                    </li>
+                    <li>
+                        <h4>Type</h4>
+                        <div class="value" id="nfcType"></div>
+                    </li>
+                    <li>
+                        <h4>Read Status</h4>
+                        <div class="value" id="nfcReadStatus"></div>
+                    </li>
+
+                    <li>
+                        <h4>Payload</h4>
+                        <div class="value payload" id="nfcPayload"></div>
+                    </li>
+                </ul>
+
+                <div>
+                    <h4>Raw</h4>
+                    <div class="value">
+                        <div id="rawData"></div>
                     </div>
                 </div>
             </div>
-            <div class="history" id="tagHistory">
 
+            <div class="currentNfcHistory">
+                <h4>History</h4>
+                <div class="history" id="tagHistory"></div>
             </div>
         </div>
     </main>

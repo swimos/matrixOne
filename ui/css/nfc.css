@@ -1,44 +1,114 @@
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.unstyle {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 .main-center {
+    padding: 0 0 8px 0;
     flex-direction: column;
+    border-radius: 8px;
+    background: rgba(12, 17, 18, 0.5);
+    overflow: hidden;
+    color: #e1e1e1;
+}
+
+.main-center h3 {
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-weight: 300;
+    color: #fff;
+}
+
+.main-center h4 {
+    display: block;
+    margin: 0;
+    padding: 0 0 4px 0;
+    color: rgba(160,166,166,0.5);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.main-center .title {
+    background-color: rgb(0, 72, 104);
 }
 
 .currentNfcInfoPanel {
-    width: 100%;
-    height: 300px;
-    background-color: rgba(255,255,255,0.1);
+    display: flex;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.currentNfcInfoPanel > ul, .currentNfcInfoPanel > div {
+    width: 50%;
+}
+
+.currentNfcInfoPanel > ul {
+    padding-right: 8px;
+}
+
+.currentNfcInfoPanel > ul li {
+    margin-bottom: 16px;
+}
+
+.currentNfcInfoPanel > ul .value {
+    min-height: 22px;
+}
+
+.currentNfcInfoPanel > ul .payload {
+    height: 70px;
+    overflow-y: auto;
+}
+
+.currentNfcInfoPanel > div {
     display: flex;
     flex-direction: column;
 }
 
-.nfcInfoGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-areas: ". . rawData rawData" ". . rawData rawData" ". . rawData rawData" ". . rawData rawData";    
+.currentNfcInfoPanel > div .value {
+    position: relative;
     flex-grow: 1;
-    height: calc(100% - 30px);
+    overflow-y: scroll;
 }
 
-.rawData { 
-    grid-area: rawData; 
-    display: flex;
-    flex-direction: column;
-}
-
-h3, h4 {
-    margin: 0px;
-    padding: 0px;
-}
-
-#rawData {
-    flex-grow: 1;
-    overflow: auto;
-}
-
-.history {
+.currentNfcInfoPanel > div .value > div {
+    position: absolute;
     width: 100%;
+}
+
+.currentNfcHistory h4 {
+    padding: 8px;
+}
+
+.currentNfcHistory .history {
     height: 300px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column-reverse;
+    padding: 0 8px;
+    overflow-y: scroll;
+}
+
+.currentNfcHistory .history div {
+    padding: 8px 0;
+    word-break: break-all;
 }
