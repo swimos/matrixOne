@@ -23,7 +23,7 @@ class NfcDemoScreen {
             .nodeUri(`/nfc`)
             .laneUri("rawTagData")
             .didSet((newValue, oldValue) => {
-                console.info('rawTagData', newValue);
+                console.info('rawTagData', newValue.toAny());
                 const tagInfo = newValue.get("info");
                 document.getElementById("rawData").innerText = newValue;
                 document.getElementById("nfcType").innerText = tagInfo.get("type").stringValue("");

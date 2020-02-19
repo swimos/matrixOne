@@ -12,7 +12,7 @@ class Main {
         this.everloop = null;
         this.lastColor = null;
         this.mainLoop = null;
-        this.mainLoopTimeMS = 50;
+        this.mainLoopTimeMS = 100;
         this.animPixelColor = {r:0, g:0, b:0, w:0};
         this.currImuValues = null;
         this.currUV = 0;
@@ -26,6 +26,7 @@ class Main {
         this.currentLedAnimation = "default";
         this.currRainbowStep = 0;
         this.isConnected = false;
+        this.isFading = false;
 
         this.colorChange = false;
         this.nfcOptions = {
@@ -46,7 +47,6 @@ class Main {
         }
         this.everloop = new Array(matrix.led.length).fill({});
         this.everloop[0] = this.animPixelColor;
-        this.updateColor(); // Init color change
     }
 
     start() {
@@ -55,12 +55,17 @@ class Main {
         }
         swimClient.downlinkValue().hostUri(this.swimUrl).nodeUri('/settings/animation').laneUri('ledAnimation')
             .didSet((value)=> {
-                this.currentLedAnimation = value.stringValue("default");
+                if(this.currentLedAnimation != value.stringValue("default")) {
+                    this.currentLedAnimation = value.stringValue("default");
+                }
             })
             .didConnect(() => {
+                console.info("connected");
                 this.isConnected = true;
+                this.updateColor(); // Init color change
             })
             .didClose(() => {
+                console.info("disconnected");
                 this.isConnected = false;
             })
             .open();        
@@ -106,15 +111,18 @@ class Main {
             
             if (code === 256){
                 console.log(`Tag Was Scanned: ${code}`);
+                console.info(tag);
                 let records = ndef.decodeMessage(tag.ndef.content);
+                console.info("records", records);
                 tag["ndefRecords"] = records;
-                tag["decodedPayload"] = ndef.text.decodePayload(records[0].payload);
+                tag["decodedPayload"] = records[0].value;
             } else {
                 console.log(`Nothing Was Scanned: ${code}`);
                 tag["ndefRecords"] = null;
                 tag["decodedPayload"] = null;
             }
 
+            console.info(tag["decodedPayload"]);
             this.currNfcCode = code;
             tag["code"] = code;
 
@@ -189,8 +197,7 @@ class Main {
         } catch(ex) {
             console.info("updateUV", ex);
         }
-
-        
+       
     }
 
     updateHumidity() {
@@ -223,25 +230,20 @@ class Main {
     }
 
     doSwimCommand(hostUri, nodeUri, laneUri, msg) {
+        // make sure we are connected to swim server. if not drop messages until we are.
         if(this.isConnected) {
             try {
                 swimClient.command(hostUri, nodeUri, laneUri, msg);
             } catch(ex) {
-                console.info(`*** doSwimCommand error for ${hostUri}${nodeUri}/${laneUri} ***`);
                 console.info(ex);
-                console.info(`*** Make sure the Swim server is running  ***\r\n`);
             }        
     
-        } else {
-            console.info("swim client offline");
-        }
+        } 
     }
 
-    interpolate(startValue, endValue, stepNumber, lastStepNumber) {
-        return (endValue - startValue) * stepNumber / lastStepNumber + startValue;
-    }    
-
+    // rainbow LED flash animation (triggered when NFS state changes)
     rainbows(fadeDirection) {
+        this.isFading = true;
         const startColor = swimUi.Color.rgb(0, 0, 255, 0.2).hsl();
         const endColor = swimUi.Color.rgb(255, 0, 0, 0.75).hsl();
         
@@ -260,21 +262,25 @@ class Main {
 
 
         if(fadeDirection === "in") {
-            this.currRainbowStep = this.currRainbowStep + 0.1;
-        }
-        if(fadeDirection === "out") {
+            this.currRainbowStep = this.currRainbowStep + 0.05;
+        } else {
             this.currRainbowStep = this.currRainbowStep - 0.15;
         }
 
-        if(this.currRainbowStep > 0.5 && fadeDirection === "in") {
+        if(this.currRainbowStep > 0.25 && fadeDirection === "in") {
             this.doSwimCommand(this.swimUrl, `/settings/animation`, 'setLedAnimation', "rainbowFadeOut");
         } 
-        if(this.currRainbowStep < 0 && fadeDirection === "out") {
-            this.doSwimCommand(this.swimUrl, `/settings/animation`, 'setLedAnimation', "default");                
+        if(this.currRainbowStep < 0) {
+            this.doSwimCommand(this.swimUrl, `/settings/animation`, 'setLedAnimation', "default");          
+            this.currRainbowStep = 0;
         }
         
         
     }
+
+    interpolate(startValue, endValue, stepNumber, lastStepNumber) {
+        return (endValue - startValue) * stepNumber / lastStepNumber + startValue;
+    }    
 
 }
 
