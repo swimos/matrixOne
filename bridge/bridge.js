@@ -115,7 +115,13 @@ class Main {
                 let records = ndef.decodeMessage(tag.ndef.content);
                 console.info("records", records);
                 tag["ndefRecords"] = records;
-                tag["decodedPayload"] = records[0].value;
+                if(records && records[0] && records[0].value) {
+                    tag["decodedPayload"] = records[0].value;
+                } else {
+                    tag["decodedPayload"] = "No Tag Value Found";
+                }
+
+                
             } else {
                 console.log(`Nothing Was Scanned: ${code}`);
                 tag["ndefRecords"] = null;
